@@ -9,6 +9,7 @@ const PORT = '3000';
 
 const { readFile } = require('fs').promises;
 const { randomUUID } = require('crypto');
+const loginValidate = require('./middleware/loginValidate');
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -42,9 +43,8 @@ app.get('/talker/:id', async (require, response) => {
   }
 });
 
-app.post('/login', (require, response) => {
+app.post('/login', loginValidate, (require, response) => {
   const token = randomUUID().split('-').join('').slice(0, 16);
-  console.log(token);
   response.status(200).json({ token });
 });
 
