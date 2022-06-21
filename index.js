@@ -8,6 +8,7 @@ const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
 const { readFile } = require('fs').promises;
+const { randomUUID } = require('crypto');
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -40,6 +41,14 @@ app.get('/talker/:id', async (require, response) => {
     return response.status(404).send(error.message);
   }
 });
+
+app.post('/login', (require, response) => {
+  const token = randomUUID().split('-').join('').slice(0, 16);
+  console.log(token);
+  response.status(200).json({ token });
+});
+
+// new Date().getTime().toString().slice(0,16)
 
 app.listen(PORT, () => {
   console.log('Online');
