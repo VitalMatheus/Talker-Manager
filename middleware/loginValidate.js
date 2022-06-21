@@ -16,4 +16,4 @@ const loginValidate = (require, response, next) => {
   return next();
 };
 
-module.exports = loginValidate;
+module.exports = { loginValidate };
