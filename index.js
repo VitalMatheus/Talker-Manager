@@ -25,6 +25,15 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/talker/search', tokenValidate, async (require, response) => {
+  const query = require.query.q;
+  const data = await readFiles();
+  const talker = data.filter((obj) => obj.name.includes(query));
+  console.log('talker: ', talker);
+  if (!query || query === '') return response.status(200).json(data);
+  return response.status(200).send(talker);
+});
+
 app.get('/talker', async (_require, response) => {
   try {
     const data = await readFiles();
