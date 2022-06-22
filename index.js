@@ -96,6 +96,18 @@ app.put('/talker/:id',
   }
 });
 
+app.delete('/talker/:id', tokenValidate, async (require, response) => {
+  try {
+    const { id } = require.params;
+    const talkers = await readFiles();
+    const newData = talkers.filter((talker) => talker.id !== Number(id));
+    await writeFiles(newData);
+    return response.status(204).end();
+  } catch (error) {
+    return response.status(400).send(error.message); 
+  }
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });

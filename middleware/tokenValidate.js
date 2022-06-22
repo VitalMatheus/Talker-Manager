@@ -6,7 +6,7 @@ const tokenValidate = (require, response, next) => {
   if (authorization.length !== 16) {
     return response.status(401).json({ message: 'Token inválido' });
   }
-  next();
+  return next();
 };
 
 module.exports = { tokenValidate };
