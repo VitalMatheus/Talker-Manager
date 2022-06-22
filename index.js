@@ -65,15 +65,35 @@ async (require, response) => {
   const { name, age, talk } = require.body;
     try {
       const talkers = await readFiles();
-      console.log(talkers.length);
       const newTalker = { id: talkers.length + 1, name, age, talk };
-      // console.log('newtalker: ', newTalker, typeof newTalker);
       talkers.push(newTalker);
       await writeFiles(talkers);
       return response.status(201).json(newTalker); 
     } catch (error) {
       return response.status(400).send(error.message);
     }
+});
+
+app.put('/talker/:id',
+  tokenValidate,
+  nameValidate,
+  ageValidate,
+  talkValidate,
+  rateValidate,
+  watchedAtValidate,
+  async (require, response) => {
+    try {
+      const { id } = require.params;
+      const { name, age, talk } = require.body;
+      const data = await readFiles();
+
+      const updated = { id: Number(id), name, age, talk };
+      data[Number(id)] = updated;
+      await writeFiles(data);
+      return response.status(200).json(updated);
+  } catch (error) {
+    return response.status(400).send(error.message);
+  }
 });
 
 app.listen(PORT, () => {
